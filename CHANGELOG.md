@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/odigos-io/simple-trace-db/compare/simple-trace-db-v0.0.2...simple-trace-db-v0.0.3) (2025-03-10)
+
+
+### Bug Fixes
+
+* use gcp registry instead of dockerhub ([e2fde64](https://github.com/odigos-io/simple-trace-db/commit/e2fde64f49e24e133c6f2e7348ac7ce88f16166c))
+
 ## [0.0.2](https://github.com/odigos-io/simple-trace-db/compare/simple-trace-db-v0.0.1...simple-trace-db-v0.0.2) (2025-03-10)
 
 
