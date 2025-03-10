@@ -1,0 +1,21 @@
+{
+  "name": "simple-trace-db",
+  "version": "0.0.1",
+  "main": "build/src/index.js",
+  "repository": "git@github.com:odigos-io/simple-trace-db.git",
+  "scripts": {
+    "compile": "tsc",
+    "start": "ts-node-dev --respawn src/index.ts"
+  },
+  "devDependencies": {
+    "@types/express": "types/express",
+    "@types/node": "^22.13.10",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "^2.2.3",
+    "express": "^4.21.2",
+    "jmespath": "^0.16.0"
+  }
+}
