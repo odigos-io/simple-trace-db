@@ -51,6 +51,6 @@ app.get("/v1/traces", (req: express.Request, res: express.Response) => {
     res.json(spansPerTrace);
 });
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Listening for incoming requests on port ${port}`);
 });
