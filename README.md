@@ -30,7 +30,7 @@ GET /v1/spans
 To filter the spans based on it's properties, send a `JMESPath` query as a query parameter (url-encoded):
 
 ```sh
-GET /v1/spans?query=name%3D%3D%27GET%27
+GET /v1/spans?jsmepath=name%3D%3D%27GET%27
 ```
 
 (which is url-encoded for `name=='GET'`).
@@ -48,7 +48,7 @@ GET /v1/traces
 Get only traces where the spans array matches some condition:
 
 ```sh
-GET /v1/traces?query=length%28%5B%3FserviceName%3D%3D%27inventory%27%5D%29%20%3E%20%600%60
+GET /v1/traces?jsmepath=length%28%5B%3FserviceName%3D%3D%27inventory%27%5D%29%20%3E%20%600%60
 ```
 
 (or url-decoded: "length([?serviceName=='inventory']) > `0`")
