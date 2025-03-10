@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/odigos-io/simple-trace-db/compare/simple-trace-db-v0.0.3...simple-trace-db-v0.0.4) (2025-03-10)
+
+
+### Bug Fixes
+
+* add id-token permissions for publish ([e2ffa86](https://github.com/odigos-io/simple-trace-db/commit/e2ffa86d27316f047f77b7a0dc56790f32cc5be4))
+
 ## [0.0.3](https://github.com/odigos-io/simple-trace-db/compare/simple-trace-db-v0.0.2...simple-trace-db-v0.0.3) (2025-03-10)
 
 
