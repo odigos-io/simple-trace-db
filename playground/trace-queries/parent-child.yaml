@@ -1,0 +1,44 @@
+apiVersion: simple-trace-db.odigos.io/v1
+kind: Query
+metadata:
+  name: parent-child
+  description: |
+    Boolean query asserting that the trace contains a parent-child relationship between relevant services in the trace.
+    It is used to assert that context propagation is working as expected and the trace spans are correctly linked.
+spec:
+  query: |
+
+    length(
+      [?
+        span.resourceAttributes."telemetry.sdk.language" == 'dotnet' && span.serviceName == 'pricing' && span.kind == 'server'
+          && 
+        parent.span.serviceName == 'frontend' && parent.span.resourceAttributes."telemetry.sdk.language" == 'java'
+      ]
+    ) > `0` &&
+
+    length(
+      [?
+        span.resourceAttributes."telemetry.sdk.language" == 'python' && span.serviceName == 'inventory' && span.kind == 'server'
+          && 
+        parent.span.serviceName == 'frontend' && parent.span.resourceAttributes."telemetry.sdk.language" == 'java'
+      ]
+    ) > `0` && 
+
+    length(
+      [?
+        span.resourceAttributes."telemetry.sdk.language" == 'nodejs' && span.serviceName == 'coupon' && span.kind == 'server'
+          && 
+        parent.span.serviceName == 'frontend' && parent.span.resourceAttributes."telemetry.sdk.language" == 'java'
+      ]
+    ) > `0` && 
+
+    length(
+      [?
+        span.resourceAttributes."telemetry.sdk.language" == 'go' && span.serviceName == 'membership' && span.kind == 'server'
+          && 
+        parent.span.serviceName == 'coupon' && parent.span.resourceAttributes."telemetry.sdk.language" == 'nodejs'
+      ]
+    ) > `0`
+  querySyntax: JMESPath
+  spansStructure: ReverseTree
+

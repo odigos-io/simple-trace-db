@@ -2,9 +2,13 @@ import express from "express";
 import { ExportTraceServiceRequest, ExportTraceServiceResponse } from "./proto/collector/trace/v1/trace_service";
 import { traceServiceRequestToSimpleSpans } from "./simple-span";
 import { allSpans, spansPerTrace } from "./proto/store";
+import { env } from "process";
+import { executeQuery } from "./queries";
+import { QuerySyntax } from "./queries/types";
+import { SpansStructure } from "./spans-structure/types";
 
 const app = express();
-const port = 4318;
+const port = Number(env.PORT) || 4318;
 
 app.post(
   "/v1/traces",
@@ -39,13 +43,22 @@ app.get("/v1/spans", (req: express.Request, res: express.Response) => {
 });
 
 app.get("/v1/traces", (req: express.Request, res: express.Response) => {
+
     const jmespathExpression = req.query.jmespath as string;
     if(jmespathExpression) {
-        const jmespath = require('jmespath');
-        const traces = Object.fromEntries(Object.entries(spansPerTrace).filter(([traceId, spans]) => {
-            return jmespath.search(spans, jmespathExpression)
+        const traces = Object.fromEntries(Object.entries(spansPerTrace).filter(([_, spans]) => {
+            return executeQuery(spans, QuerySyntax.JMESPath, SpansStructure.ReverseTree, jmespathExpression);
         }));
         console.log('executed jmespath query:', jmespathExpression, 'found:', Object.keys(traces).length);
+        return res.json(traces);
+    }
+
+    const jsonpathExpression = req.query.jsonpath as string;
+    if(jsonpathExpression) {
+        const traces = Object.fromEntries(Object.entries(spansPerTrace).filter(([_, spans]) => {
+            return executeQuery(spans, QuerySyntax.JMESPath, SpansStructure.Flat, jmespathExpression).length > 0;
+        }));
+        console.log('executed jsonpath query:', jsonpathExpression, 'found:', Object.keys(traces).length);
         return res.json(traces);
     }
     res.json(spansPerTrace);

@@ -1,0 +1,16 @@
+apiVersion: simple-trace-db.odigos.io/v1
+kind: Query
+metadata:
+  name: all-5-languages
+  description: |
+    Boolean query asserting that all 5 services are present in the trace by the serviceName attribute.
+    It only validates the presence of the services and does not check the order of the services or trace continuity/hierarchy.
+spec:
+  query: |
+    length([?span.serviceName == 'frontend']) > `0` &&
+    length([?span.serviceName == 'pricing']) > `0` &&
+    length([?span.serviceName == 'inventory']) > `0` &&
+    length([?span.serviceName == 'coupon']) > `0` &&
+    length([?span.serviceName == 'membership']) > `0`
+  querySyntax: JMESPath
+  spansStructure: ReverseTree

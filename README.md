@@ -55,3 +55,20 @@ GET /v1/traces?jsmepath=length%28%5B%3FserviceName%3D%3D%27inventory%27%5D%29%20
 
 e.g. return all traces that includes a span with `serviceName` set to `inventory`.
 
+## Simple Span
+
+"Simple Span" is a format invented and used in this DB, which optimizes simplicity and readability for human beings who need to understand it.
+
+simple-trace-db will transform the OTLP spans it receives into "Simple Span" format before storing them in memory. When writing a query to the memory-db, the query will run against those "Simple Spans" objects, and those will be returned in the response.
+
+- Each span looks the same and contains both resource and scope (unlike OTLP where there is an hierarchy resources->scopes->spans which is more compact but harder to read and query).
+- Trace and span IDs are written in hex, just as you would see them in most APMs (unlike storing them as byte arrays).
+- Timestamps are stored as ISO string with nanosecond precision ("2025-03-12T17:05:02.096444502Z") which is straightforward to sort and consume for humans (in oppose to nanos/seconds since epoch).
+- All attributes (resource, scope and span) are stored as maps, where key is the attribute name and value is the attribute value (unlike OTLP where attributes are stored as an array of key-value pairs). This makes the data more compact and easier to read and query.
+- "enum" values are stored as strings instead of numerical values. kind can be "internal", "server", "client", "producer", "consumer".
+- "span status" is abstracted into a boolean that record of the span reported as error or not. Remove the need to use "SpanStatus" OTLP enum, and is more straightforward to query by.
+- some common fields are extracted for easy of use:
+  - `serviceName` is extracted from the `service.name` resource attribute as a key for the span.
+  - `durationMs` is calculated from the `startTime` and `endTime` span attributes.
+
+This format is not most compact and efficient for storage; it duplicates some data per span, and uses strings instead of ints or enums. Since this DB is designed for tests with very few spans, the simplicity and readability of the data is more important than the efficiency of the storage.

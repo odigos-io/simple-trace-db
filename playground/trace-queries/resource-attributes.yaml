@@ -1,0 +1,15 @@
+apiVersion: simple-trace-db.odigos.io/v1
+kind: Query
+metadata:
+  name: parent-child
+  description: |
+    TODO
+spec:
+  query: |
+    all([*].resourceAttributes, 
+        type(@) == 'object' &&
+        contains(keys(@), 'os.type') &&
+        contains(keys(@), 'os.name') &&
+        contains(keys(@), 'telemetry.sdk.version'))
+  querySyntax: JMESPath
+  spansStructure: ReverseTree
