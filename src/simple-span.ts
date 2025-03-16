@@ -161,23 +161,24 @@ const idsByteArrayToHexString = (idBytes: Uint8Array): string => {
 };
 
 const nanosToFullISOString = (nanos: bigint): string => {
-  // Extract seconds and nanoseconds
+  // extract seconds and nanoseconds as bigints
   const seconds = nanos / 1_000_000_000n;
   const nanoseconds = nanos % 1_000_000_000n;
 
-  // Convert seconds to milliseconds for Date
+  // convert seconds to milliseconds for Date
   const millis = Number(seconds) * 1000;
-
-  // Create a Date object
   const date = new Date(millis);
 
-  // Format the ISO string (default is milliseconds)
-  const isoString = date.toISOString().replace("Z", "");
+  // format the ISO string (default is milliseconds)
+  const isoString = date.toISOString();
 
-  // Format nanoseconds to 9 digits, ensuring leading zeros
+  // remove milliseconds and "Z" part of the string in order to add nanoseconds ".123Z"
+  const isoStringWithoutMillis = isoString.slice(0, -5);
+
+  // format nanoseconds to 9 digits, ensuring leading zeros
   const nanoStr = nanoseconds.toString().padStart(9, "0");
 
-  return `${isoString}.${nanoStr}Z`;
+  return `${isoStringWithoutMillis}.${nanoStr}Z`;
 };
 
 const spanStatusToIsError = (otlpValue?: Status_StatusCode): boolean | undefined => {
@@ -211,8 +212,9 @@ export const traceServiceRequestToSimpleSpans = (
             : undefined;
         const spanAttributes = otlpAttributesToMap(span.attributes);
         const kind = otlpSpanKindToSimpleSpanKind(span.kind);
-        const durationMs = Number(span.endTimeUnixNano - span.startTimeUnixNano) / 1000000;
+        const durationMs = Number(span.endTimeUnixNano - span.startTimeUnixNano) / 1_000_000;
         const spanStatusError = spanStatusToIsError(span.status?.code);
+        const serviceName = resourceAttributes["service.name"] as string;
 
         const simpleSpan: SimpleSpan = {
           traceId,
@@ -223,13 +225,13 @@ export const traceServiceRequestToSimpleSpans = (
           startTime: nanosToFullISOString(span.startTimeUnixNano),
           endTime: nanosToFullISOString(span.endTimeUnixNano),
           durationMs,
-          serviceName: resourceAttributes["service.name"] as string,
+          serviceName,
           resourceAttributes,
           scopeName: scopeSpans.scope?.name!,
           scopeVersion: scopeSpans.scope?.version,
           spanAttributes,
           spanStatusError,
-          spanStatusMessage: span.status?.message,
+          spanStatusMessage: span.status?.message || undefined,
         };
         spans.push(simpleSpan);
       }
