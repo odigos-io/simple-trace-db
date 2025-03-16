@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.6](https://github.com/odigos-io/simple-trace-db/compare/simple-trace-db-v0.0.5...simple-trace-db-v0.0.6) (2025-03-16)
+
+
+### Features
+
+* query as tree and support jsonpath ([e38009c](https://github.com/odigos-io/simple-trace-db/commit/e38009c718e7a5e6c5163219c13d6ed2bd82aec6))
+* query as tree and support jsonpath ([12ba308](https://github.com/odigos-io/simple-trace-db/commit/12ba3088524794a68399751452cc60423fa039ac))
+
 ## [0.0.5](https://github.com/odigos-io/simple-trace-db/compare/simple-trace-db-v0.0.4...simple-trace-db-v0.0.5) (2025-03-10)
 
 
