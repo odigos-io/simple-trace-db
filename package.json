@@ -1,6 +1,6 @@
 {
   "name": "@odigos/simple-trace-db",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "build/src/index.js",
   "repository": "git@github.com:odigos-io/simple-trace-db.git",
   "scripts": {
