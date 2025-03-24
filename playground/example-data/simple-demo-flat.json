@@ -31,6 +31,7 @@
       "k8s.container.name": "pricing",
       "k8s.namespace.name": "default",
       "k8s.deployment.name": "pricing",
+      "k8s.pod.name": "pricing-54c75bf7f7-9m8ds",
       "k8s.node.name": "kind-worker",
       "odigos.version": "e2e-test"
     },
@@ -158,6 +159,7 @@
       "k8s.container.name": "frontend",
       "k8s.deployment.name": "frontend",
       "k8s.namespace.name": "default",
+      "k8s.pod.name": "frontend-666ddf8cbf-vmdwd",
       "os.description": "Linux 6.12.5-linuxkit",
       "os.type": "linux",
       "process.command_args": [
@@ -212,6 +214,7 @@
       "k8s.container.name": "frontend",
       "k8s.deployment.name": "frontend",
       "k8s.namespace.name": "default",
+      "k8s.pod.name": "frontend-666ddf8cbf-vmdwd",
       "os.description": "Linux 6.12.5-linuxkit",
       "os.type": "linux",
       "process.command_args": [
@@ -266,6 +269,7 @@
       "k8s.container.name": "frontend",
       "k8s.deployment.name": "frontend",
       "k8s.namespace.name": "default",
+      "k8s.pod.name": "frontend-666ddf8cbf-vmdwd",
       "os.description": "Linux 6.12.5-linuxkit",
       "os.type": "linux",
       "process.command_args": [
@@ -319,6 +323,7 @@
       "k8s.container.name": "frontend",
       "k8s.deployment.name": "frontend",
       "k8s.namespace.name": "default",
+      "k8s.pod.name": "frontend-666ddf8cbf-vmdwd",
       "os.description": "Linux 6.12.5-linuxkit",
       "os.type": "linux",
       "process.command_args": [
@@ -359,7 +364,7 @@
       "server.address": "localhost",
       "client.address": "127.0.0.1",
       "url.path": "/buy",
-      "url.query": "id=5"
+      "url.query": "id=123"
     },
     "spanStatusMessage": ""
   },

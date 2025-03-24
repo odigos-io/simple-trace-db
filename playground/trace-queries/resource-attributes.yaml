@@ -3,13 +3,11 @@ kind: Query
 metadata:
   name: parent-child
   description: |
-    TODO
+    asset few resource attributes are present in all the trace spans.
+    the assertion is done by filtering traces with spans where this attribute is missing.
+    if successful, the query will return 0 traces to indicate that all spans have the required attribute.
 spec:
   query: |
-    all([*].resourceAttributes, 
-        type(@) == 'object' &&
-        contains(keys(@), 'os.type') &&
-        contains(keys(@), 'os.name') &&
-        contains(keys(@), 'telemetry.sdk.version'))
+    length([?(!span.resourceAttributes."odigos.version" || !span.resourceAttributes."k8s.deployment.name" || !span.resourceAttributes."k8s.pod.name" || !starts_with(span.resourceAttributes."k8s.node.name", 'kind-') )]) > `0`
   querySyntax: JMESPath
   spansStructure: ReverseTree
