@@ -12,7 +12,7 @@ const port = Number(env.PORT) || 4318;
 
 app.post(
   "/v1/traces",
-  (express as any).raw({ type: "application/x-protobuf" }),
+  (express as any).raw({ type: "application/x-protobuf", limit: '50mb' }),
   (req: express.Request, res: express.Response) => {
     const traceServiceRequest = ExportTraceServiceRequest.decode(
       (req as any).body
