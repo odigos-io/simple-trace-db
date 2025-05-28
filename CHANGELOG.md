@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.7](https://github.com/odigos-io/simple-trace-db/compare/simple-trace-db-v0.0.6...simple-trace-db-v0.0.7) (2025-05-28)
+
+
+### Bug Fixes
+
+* increase express raw payload limit to allow large exports ([08a0c60](https://github.com/odigos-io/simple-trace-db/commit/08a0c600d8caac97604aa25f2945c3e4f65e187a))
+* increase express raw payload limit to allow larget exports ([4e982c8](https://github.com/odigos-io/simple-trace-db/commit/4e982c8f8e3a3e85b82b372ceac9e8fd6b9ac9a0))
+
 ## [0.0.6](https://github.com/odigos-io/simple-trace-db/compare/simple-trace-db-v0.0.5...simple-trace-db-v0.0.6) (2025-03-16)
 
 
