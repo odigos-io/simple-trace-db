@@ -9,7 +9,8 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  id-token: 'write'  
+  id-token: write
+  packages: write
 
 jobs:
   release-job:
@@ -54,10 +55,19 @@ jobs:
           username: oauth2accesstoken
           password: ${{ steps.gcp-auth.outputs.access_token }}
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}  
+
       - name: Build and Push Docker Image for simple-trace-db
         if: ${{ steps.release.outputs.release_created }}
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: us-central1-docker.pkg.dev/odigos-cloud/components/simple-trace-db:${{ steps.release.outputs.version }}
+          tags: |
+            us-central1-docker.pkg.dev/odigos-cloud/components/simple-trace-db:${{ steps.release.outputs.version }}
+            ghcr.io/${{ github.repository }}/simple-trace-db:${{ steps.release.outputs.version }}
           platforms: linux/amd64,linux/arm64
