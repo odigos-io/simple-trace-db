@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -53,8 +54,8 @@ jobs:
         with:
           push: true
           tags: |
-            us-central1-docker.pkg.dev/odigos-cloud/components/simple-trace-db:${{ steps.release.outputs.version }}
-            ghcr.io/${{ github.repository }}/simple-trace-db:${{ steps.release.outputs.version }}
+            us-central1-docker.pkg.dev/odigos-cloud/components/simple-trace-db:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}/simple-trace-db:${{ github.ref_name }}
             registry.depot.dev/84dl6xf069:simple-trace-db
           platforms: linux/amd64,linux/arm64
         
