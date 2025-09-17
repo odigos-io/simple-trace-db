@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   release-job:
-    runs-on: ubuntu-latest
+    runs-on: depot-ubuntu-latest
 
     steps:
       - name: Check out code
@@ -70,4 +70,5 @@ jobs:
           tags: |
             us-central1-docker.pkg.dev/odigos-cloud/components/simple-trace-db:${{ steps.release.outputs.version }}
             ghcr.io/${{ github.repository }}/simple-trace-db:${{ steps.release.outputs.version }}
+            registry.depot.dev/84dl6xf069:simple-trace-db
           platforms: linux/amd64,linux/arm64
