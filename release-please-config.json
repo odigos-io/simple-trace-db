@@ -1,9 +1,11 @@
 {
     "bump-minor-pre-major": true,
     "bump-patch-for-minor-pre-major": true,
+    "include-v-in-tags": true,
     "packages": {
         ".": {
-            "release-type": "node"
+            "release-type": "node",
+            "include-component-in-tag": false
         }
     }
 }
