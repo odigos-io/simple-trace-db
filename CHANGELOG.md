@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.10](https://github.com/odigos-io/simple-trace-db/compare/v0.0.9...v0.0.10) (2025-09-17)
+
+
+### Miscellaneous Chores
+
+* release v0.0.10 ([#22](https://github.com/odigos-io/simple-trace-db/issues/22)) ([1e578f1](https://github.com/odigos-io/simple-trace-db/commit/1e578f1651ff7f0bc6df6e217896bfbb9ed12db2))
+
 ## [0.0.9](https://github.com/odigos-io/simple-trace-db/compare/v0.0.8...v0.0.9) (2025-09-17)
 
 
