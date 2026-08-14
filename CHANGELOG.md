@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.12](https://github.com/odigos-io/simple-trace-db/compare/v0.0.11...v0.0.12) (2026-08-14)
+
+
+### Features
+
+* **logs:** add OTLP logs ingest and query endpoints | RUN-644 ([#29](https://github.com/odigos-io/simple-trace-db/issues/29)) ([7d42283](https://github.com/odigos-io/simple-trace-db/commit/7d42283797ff9e6bdf89bf3ead191f17acb30086))
+
 ## [0.0.11](https://github.com/odigos-io/simple-trace-db/compare/v0.0.10...v0.0.11) (2025-09-18)
 
 
