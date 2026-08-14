@@ -111,7 +111,12 @@ const otlpSpanKindToSimpleSpanKind = (kind: Span_SpanKind): SpanKind => {
     }
 }
 
-const otlpAnyValueToSimpleValue = (value: any): SimpleAnyValue => {
+export const otlpAnyValueToSimpleValue = (value: any): SimpleAnyValue => {
+  // a KeyValue carrying no value at all is legal on the wire. without this guard the property
+  // access below throws, which fails the decode and silently drops the whole export batch.
+  if (!value) {
+    return undefined;
+  }
   if (value.stringValue != null) {
     return value.stringValue;
   } else if (value.boolValue != null) {
@@ -135,7 +140,7 @@ const otlpAnyValueToSimpleValue = (value: any): SimpleAnyValue => {
   }
 };
 
-const otlpAttributesToMap = (
+export const otlpAttributesToMap = (
   attrs?: KeyValue[]
 ): { [key: string]: SimpleAnyValue } => {
   if (!attrs) {
@@ -160,7 +165,26 @@ const idsByteArrayToHexString = (idBytes: Uint8Array): string => {
     .join("");
 };
 
-const nanosToFullISOString = (nanos: bigint): string => {
+// converts an optional trace or span id to hex, returning undefined when the id is not a real one.
+// OTLP marks "no id" in three interchangeable ways: the field is absent, it is present but empty,
+// or it is present and all zero bytes. senders differ on which they use, and an all-zero id in
+// particular hex-encodes to a plausible looking "000...0" that would compare equal across every
+// unrelated record. collapsing all three to undefined is what makes "does this record have a trace
+// id" an honest question to ask of the data.
+export const optionalIdToHexString = (
+  idBytes: Uint8Array | undefined,
+  expectedLengthBytes: number
+): string | undefined => {
+  if (!idBytes || idBytes.length !== expectedLengthBytes) {
+    return undefined;
+  }
+  if (idBytes.every((byte) => byte === 0)) {
+    return undefined;
+  }
+  return idsByteArrayToHexString(idBytes);
+};
+
+export const nanosToFullISOString = (nanos: bigint): string => {
   // extract seconds and nanoseconds as bigints
   const seconds = nanos / 1_000_000_000n;
   const nanoseconds = nanos % 1_000_000_000n;
