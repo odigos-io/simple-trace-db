@@ -1,0 +1,56 @@
+name: Bump Patch Tag
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: bump-tag
+  cancel-in-progress: false
+
+jobs:
+  bump-tag:
+    runs-on: depot-ubuntu-latest
+    steps:
+      - name: Require main branch
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Tags can only be bumped from main (got ${GITHUB_REF})"
+          exit 1
+
+      # Tags pushed with the default GITHUB_TOKEN don't trigger other workflows,
+      # so use the octo-sts releaser token to make the push start release.yml.
+      - name: Get release token
+        uses: odigos-io/ci-core/sts@main
+        id: release-token
+        with:
+          pairs: |
+            odigos-io/simple-trace-db:releaser
+
+      - name: Check out code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          token: ${{ steps.release-token.outputs.GH_TOKEN }}
+
+      - name: Compute next patch tag
+        id: next
+        run: |
+          latest=$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n1)
+          latest=${latest:-v0.0.0}
+          IFS=. read -r major minor patch <<< "${latest#v}"
+          next="v${major}.${minor}.$((patch + 1))"
+          echo "Latest tag: ${latest} -> next tag: ${next}"
+          echo "tag=${next}" >> "$GITHUB_OUTPUT"
+
+      - name: Create and push tag
+        env:
+          TAG: ${{ steps.next.outputs.tag }}
+        run: |
+          git tag "${TAG}" "${GITHUB_SHA}"
+          git push origin "refs/tags/${TAG}"
+          echo "Pushed ${TAG} at ${GITHUB_SHA}" >> "$GITHUB_STEP_SUMMARY"

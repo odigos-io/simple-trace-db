@@ -9,14 +9,13 @@ on:
 permissions:
   contents: read
   id-token: write
-  packages: write
 
 jobs:
   release:
     runs-on: depot-ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -42,19 +41,12 @@ jobs:
           username: oauth2accesstoken
           password: ${{ steps.gcp-auth.outputs.access_token }}
   
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Login to Depot
         uses: docker/login-action@v3
         with:
-          registry: registry.depot.dev
+          registry: p0xd21zf5r.registry.depot.dev
           username: 'x-token'
-          password: ${{ secrets.DEPOT_DEV_TOKEN }}
+          password: ${{ secrets.DEPOT_PUSH_TOKEN_TEST_IMAGES }}
   
       - name: Build and Push Docker Image for simple-trace-db
         uses: docker/build-push-action@v6
@@ -62,7 +54,6 @@ jobs:
           push: true
           tags: |
             us-central1-docker.pkg.dev/odigos-cloud/components/simple-trace-db:${{ github.ref_name }}
-            ghcr.io/${{ github.repository }}/simple-trace-db:${{ github.ref_name }}
-            registry.depot.dev/84dl6xf069:simple-trace-db
+            p0xd21zf5r.registry.depot.dev/test/simple-trace-db:${{ github.ref_name }}
           platforms: linux/amd64,linux/arm64
         

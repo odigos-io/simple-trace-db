@@ -3,4 +3,3 @@ subject_pattern: "^repo:odigos-io(@84347062)?/simple-trace-db(@945727157)?:ref:r
 
 permissions:
   contents: write
-  pull_requests: write
